@@ -1,0 +1,1554 @@
+{
+	"info": {
+		"_postman_id": "8e6b001b-cad7-491e-8f7c-694ce706f5f8",
+		"name": "Swagger Pet Store API Testing",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29561860",
+		"_collection_link": "https://solar-shadow-446163.postman.co/workspace/Gruppuppgift-RICKARD%252FJOSEFIN~43ac67a3-e9c5-4ca8-9e5d-8d8dd5f8f5cb/collection/29559354-8e6b001b-cad7-491e-8f7c-694ce706f5f8?action=share&source=collection_link&creator=29561860"
+	},
+	"item": [
+		{
+			"name": "pet",
+			"item": [
+				{
+					"name": "creating a pet",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Test to validate response headers\r",
+									"pm.test(\"Response headers are valid\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\");\r",
+									"    pm.response.to.have.header(\"date\");\r",
+									"    pm.response.to.have.header(\"server\");\r",
+									"});\r",
+									"\r",
+									"// Test to validate the JSON structure of the response\r",
+									"pm.test(\"Response JSON structure is valid\", function () {\r",
+									"    var responseJSON = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseJSON).to.be.an('object').that.has.all.keys('id', 'category', 'name', 'photoUrls', 'tags', 'status');\r",
+									"    pm.expect(responseJSON.category).to.be.an('object').that.has.all.keys('id', 'name');\r",
+									"    pm.expect(responseJSON.tags).to.be.an('array').that.has.length.above(0);\r",
+									"    responseJSON.tags.forEach(function (tag) {\r",
+									"        pm.expect(tag).to.be.an('object').that.has.all.keys('id', 'name');\r",
+									"    });\r",
+									"    pm.expect(responseJSON.photoUrls).to.be.an('array').that.has.length.above(0);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"pm.test(\"Pet is created successfully\", function () {\r",
+									"    var responseJSON = pm.response.json();\r",
+									"\r",
+									"    // Check if the response contains the created pet's ID\r",
+									"    pm.expect(responseJSON).to.have.property('id').that.is.a('number');\r",
+									"\r",
+									"    // Check if the created pet's ID is greater than 0\r",
+									"    pm.expect(responseJSON.id).to.be.above(0);\r",
+									"\r",
+									"    // Check if the response contains the created pet's name\r",
+									"    pm.expect(responseJSON).to.have.property('name').that.is.a('string');\r",
+									"\r",
+									"    // Check if the response contains the created pet's status\r",
+									"    pm.expect(responseJSON).to.have.property('status').that.is.a('string');\r",
+									"\r",
+									"    // Check if the response contains the created pet's category\r",
+									"    pm.expect(responseJSON).to.have.property('category').that.is.an('object');\r",
+									"\r",
+									"    // Check if the created pet's category contains an ID\r",
+									"    pm.expect(responseJSON.category).to.have.property('id').that.is.a('number');\r",
+									"\r",
+									"    // Check if the created pet's category contains a name\r",
+									"    pm.expect(responseJSON.category).to.have.property('name').that.is.a('string');\r",
+									"\r",
+									"    // Check if the response contains the created pet's tags\r",
+									"    pm.expect(responseJSON).to.have.property('tags').that.is.an('array');\r",
+									"\r",
+									"    // Check if each tag in the created pet's tags array has an ID and a name\r",
+									"    responseJSON.tags.forEach(function (tag) {\r",
+									"        pm.expect(tag).to.have.property('id').that.is.a('number');\r",
+									"        pm.expect(tag).to.have.property('name').that.is.a('string');\r",
+									"    });\r",
+									"\r",
+									"    // Check if the response contains the created pet's photoUrls\r",
+									"    pm.expect(responseJSON).to.have.property('photoUrls').that.is.an('array');\r",
+									"\r",
+									"    // Check if each photoUrl in the created pet's photoUrls array is a non-empty string\r",
+									"    responseJSON.photoUrls.forEach(function (photoUrl) {\r",
+									"        pm.expect(photoUrl).to.be.a('string').and.to.have.length.above(0);\r",
+									"    });\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"console.log(\"meddelande\")\r",
+									"console.info(\"meddelande\")\r",
+									"console.error(\"meddelande\")"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "key",
+									"value": "auktorisation",
+									"type": "string"
+								},
+								{
+									"key": "in",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "value",
+									"value": "special-key",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 0,\r\n  \"category\": {\r\n    \"id\": 0,\r\n    \"name\": \"cat\"\r\n  },\r\n  \"name\": \"doggie\",\r\n  \"photoUrls\": [\r\n    \"cat\"\r\n  ],\r\n  \"tags\": [\r\n    {\r\n      \"id\": 0,\r\n      \"name\": \"cat\"\r\n    }\r\n  ],\r\n  \"status\": \"available\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/pet",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"pet"
+							]
+						},
+						"description": "1. Syftet med den här requesten är att skapa ett pet.\n2. I bodyn ska du ange vad petet har för namn och id.\n3. I responsen ska man få tillbaks samma body man skickade in i requesten."
+					},
+					"response": [
+						{
+							"name": "creating a pet",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"id\": 0,\r\n  \"category\": {\r\n    \"id\": 0,\r\n    \"name\": \"cat\"\r\n  },\r\n  \"name\": \"doggie\",\r\n  \"photoUrls\": [\r\n    \"cat\"\r\n  ],\r\n  \"tags\": [\r\n    {\r\n      \"id\": 0,\r\n      \"name\": \"cat\"\r\n    }\r\n  ],\r\n  \"status\": \"available\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://petstore.swagger.io/v2/pet",
+									"protocol": "https",
+									"host": [
+										"petstore",
+										"swagger",
+										"io"
+									],
+									"path": [
+										"v2",
+										"pet"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Fri, 08 Sep 2023 11:39:38 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Methods",
+									"value": "GET, POST, DELETE, PUT"
+								},
+								{
+									"key": "Access-Control-Allow-Headers",
+									"value": "Content-Type, api_key, Authorization"
+								},
+								{
+									"key": "Server",
+									"value": "Jetty(9.2.9.v20150224)"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 9223372036854775807,\n    \"category\": {\n        \"id\": 0,\n        \"name\": \"cat\"\n    },\n    \"name\": \"doggie\",\n    \"photoUrls\": [\n        \"cat\"\n    ],\n    \"tags\": [\n        {\n            \"id\": 0,\n            \"name\": \"cat\"\n        }\n    ],\n    \"status\": \"available\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Update pet",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Test to validate response headers\r",
+									"pm.test(\"Response headers are valid\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\");\r",
+									"    pm.response.to.have.header(\"date\");\r",
+									"    pm.response.to.have.header(\"server\");\r",
+									"});\r",
+									"\r",
+									"// Test to validate the JSON structure of the response\r",
+									"pm.test(\"Response JSON structure is valid\", function () {\r",
+									"    var responseJSON = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseJSON).to.be.an('object').that.has.all.keys('id', 'category', 'name', 'photoUrls', 'tags', 'status');\r",
+									"    pm.expect(responseJSON.category).to.be.an('object').that.has.all.keys('id', 'name');\r",
+									"    pm.expect(responseJSON.tags).to.be.an('array').that.has.length.above(0);\r",
+									"    responseJSON.tags.forEach(function (tag) {\r",
+									"        pm.expect(tag).to.be.an('object').that.has.all.keys('id', 'name');\r",
+									"    });\r",
+									"    pm.expect(responseJSON.photoUrls).to.be.an('array').that.has.length.above(0);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"pm.test(\"Pet was updated successfully\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"    pm.expect(pm.response.json().message).to.equal(\"Pet updated\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "key",
+									"value": "auktorisation",
+									"type": "string"
+								},
+								{
+									"key": "in",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "value",
+									"value": "special-key",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 1,\r\n  \"category\": {\r\n    \"id\": 0,\r\n    \"name\": \"svante\"\r\n  },\r\n  \"name\": \"doggie\",\r\n  \"photoUrls\": [\r\n    \"string\"\r\n  ],\r\n  \"tags\": [\r\n    {\r\n      \"id\": 0,\r\n      \"name\": \"string\"\r\n    }\r\n  ],\r\n  \"status\": \"available\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/pet",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"pet"
+							]
+						},
+						"description": "1. Syftet med denna request är att uppdatera datan i de pet som du anger.\n    \n2. I bodyn ska du ange vilket pet som du vill uppdatera genom ID. Sedan ange den information som du vill ska uppdateras till.\n    \n3. I responsen ska du få tillbaks en body med den information som ditt pet uppdaterade till."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete pet",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Test to validate response headers\r",
+									"pm.test(\"Response headers are valid\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\");\r",
+									"    pm.response.to.have.header(\"date\");\r",
+									"    pm.response.to.have.header(\"server\");\r",
+									"});\r",
+									"\r",
+									"// Test to validate the JSON structure of the response\r",
+									"pm.test(\"Response JSON structure is valid\", function () {\r",
+									"    var responseJSON = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseJSON).to.be.an('object').that.has.all.keys('id', 'category', 'name', 'photoUrls', 'tags', 'status');\r",
+									"    pm.expect(responseJSON.category).to.be.an('object').that.has.all.keys('id', 'name');\r",
+									"    pm.expect(responseJSON.tags).to.be.an('array').that.has.length.above(0);\r",
+									"    responseJSON.tags.forEach(function (tag) {\r",
+									"        pm.expect(tag).to.be.an('object').that.has.all.keys('id', 'name');\r",
+									"    });\r",
+									"    pm.expect(responseJSON.photoUrls).to.be.an('array').that.has.length.above(0);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"pm.test(\"Pet is deleted\", function () {\r",
+									"    pm.expect(pm.response.text()).to.equal('Pet not found');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "key",
+									"value": "auktorisation",
+									"type": "string"
+								},
+								{
+									"key": "in",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "value",
+									"value": "special-key",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/pet/1",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"pet",
+								"1"
+							]
+						},
+						"description": "1\\. syftet med requesten ta bort data på pet\n\n2\\. body kan vara tom.\n\n3\\. Response body förväntas säga vilket pet som har raderats."
+					},
+					"response": []
+				},
+				{
+					"name": "Update pet info",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Test to validate response headers\r",
+									"pm.test(\"Response headers are valid\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\");\r",
+									"    pm.response.to.have.header(\"date\");\r",
+									"    pm.response.to.have.header(\"server\");\r",
+									"});\r",
+									"\r",
+									"// Test to validate the JSON structure of the response\r",
+									"pm.test(\"Response JSON structure is valid\", function () {\r",
+									"    var responseJSON = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseJSON).to.be.an('object').that.has.all.keys('id', 'category', 'name', 'photoUrls', 'tags', 'status');\r",
+									"    pm.expect(responseJSON.category).to.be.an('object').that.has.all.keys('id', 'name');\r",
+									"    pm.expect(responseJSON.tags).to.be.an('array').that.has.length.above(0);\r",
+									"    responseJSON.tags.forEach(function (tag) {\r",
+									"        pm.expect(tag).to.be.an('object').that.has.all.keys('id', 'name');\r",
+									"    });\r",
+									"    pm.expect(responseJSON.photoUrls).to.be.an('array').that.has.length.above(0);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"pm.test(\"Pet info was updated\", function () {\r",
+									"    var responseJSON = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseJSON.id).to.be.a('number').and.to.not.equal(0);\r",
+									"    pm.expect(responseJSON.category).to.be.an('object').that.has.property('id').and.to.not.equal(0);\r",
+									"    pm.expect(responseJSON.category).to.be.an('object').that.has.property('name').and.to.not.equal('');\r",
+									"    pm.expect(responseJSON.name).to.be.a('string').and.to.not.equal('');\r",
+									"    pm.expect(responseJSON.photoUrls).to.be.an('array').and.to.not.be.empty;\r",
+									"    pm.expect(responseJSON.tags).to.be.an('array').and.to.not.be.empty;\r",
+									"    responseJSON.tags.forEach(function (tag) {\r",
+									"        pm.expect(tag).to.be.an('object').that.has.property('id').and.to.not.equal(0);\r",
+									"        pm.expect(tag).to.be.an('object').that.has.property('name').and.to.not.equal('');\r",
+									"    });\r",
+									"    pm.expect(responseJSON.status).to.be.a('string').and.to.not.equal('');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "key",
+									"value": "auktorisation",
+									"type": "string"
+								},
+								{
+									"key": "in",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "value",
+									"value": "special-key",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 2,\r\n  \"category\": {\r\n    \"id\": 2,\r\n    \"name\": \"fågel\"\r\n  },\r\n  \"name\": \"pippi\",\r\n  \"photoUrls\": [\r\n    \"string\"\r\n  ],\r\n  \"tags\": [\r\n    {\r\n      \"id\": 2,\r\n      \"name\": \"pippi\"\r\n    }\r\n  ],\r\n  \"status\": \"available\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/pet",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"pet"
+							]
+						},
+						"description": "1.Syftet med reqvest är att att uppdatera ny info om pet  \n2.Body förväntas innehålla ny info om pet, namn, ID, data\n\n3\\. Responsen förväntas bli att info uppdateras med nya namn"
+					},
+					"response": []
+				},
+				{
+					"name": "Get pet by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Test to validate response headers\r",
+									"pm.test(\"Response headers are valid\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\");\r",
+									"    pm.response.to.have.header(\"date\");\r",
+									"    pm.response.to.have.header(\"server\");\r",
+									"});\r",
+									"\r",
+									"// Test to validate the JSON structure of the response\r",
+									"pm.test(\"Response JSON structure is valid\", function () {\r",
+									"    var responseJSON = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseJSON).to.be.an('object').that.has.all.keys('id', 'category', 'name', 'photoUrls', 'tags', 'status');\r",
+									"    pm.expect(responseJSON.category).to.be.an('object').that.has.all.keys('id', 'name');\r",
+									"    pm.expect(responseJSON.tags).to.be.an('array').that.has.length.above(0);\r",
+									"    responseJSON.tags.forEach(function (tag) {\r",
+									"        pm.expect(tag).to.be.an('object').that.has.all.keys('id', 'name');\r",
+									"    });\r",
+									"    pm.expect(responseJSON.photoUrls).to.be.an('array').that.has.length.above(0);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response contains information about the pet\", function () {\r",
+									"    var responseJSON = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseJSON.id).to.exist.and.to.be.a('number');\r",
+									"    pm.expect(responseJSON.category).to.exist.and.to.be.an('object');\r",
+									"    pm.expect(responseJSON.name).to.exist.and.to.be.a('string');\r",
+									"    pm.expect(responseJSON.photoUrls).to.exist.and.to.be.an('array');\r",
+									"    pm.expect(responseJSON.tags).to.exist.and.to.be.an('array');\r",
+									"    pm.expect(responseJSON.status).to.exist.and.to.be.a('string');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/pet/1",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"pet",
+								"1"
+							]
+						},
+						"description": "Hämta info om pet med hjälp av ID"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "Create user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Test to validate response headers\r",
+									"pm.test(\"Response headers are valid\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\");\r",
+									"    pm.response.to.have.header(\"date\");\r",
+									"    pm.response.to.have.header(\"server\");\r",
+									"});\r",
+									"\r",
+									"// Test to validate the JSON structure of the response\r",
+									"pm.test(\"Response JSON structure is valid\", function () {\r",
+									"    var responseJSON = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseJSON).to.be.an('object').that.has.all.keys('id', 'category', 'name', 'photoUrls', 'tags', 'status');\r",
+									"    pm.expect(responseJSON.category).to.be.an('object').that.has.all.keys('id', 'name');\r",
+									"    pm.expect(responseJSON.tags).to.be.an('array').that.has.length.above(0);\r",
+									"    responseJSON.tags.forEach(function (tag) {\r",
+									"        pm.expect(tag).to.be.an('object').that.has.all.keys('id', 'name');\r",
+									"    });\r",
+									"    pm.expect(responseJSON.photoUrls).to.be.an('array').that.has.length.above(0);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"pm.test(\"User creation is successful\", function () {\r",
+									"    var responseJSON = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseJSON).to.be.an('object').that.has.property('id');\r",
+									"    pm.expect(responseJSON).to.be.an('object').that.has.property('category');\r",
+									"    pm.expect(responseJSON).to.be.an('object').that.has.property('name');\r",
+									"    pm.expect(responseJSON).to.be.an('object').that.has.property('photoUrls');\r",
+									"    pm.expect(responseJSON).to.be.an('object').that.has.property('tags');\r",
+									"    pm.expect(responseJSON).to.be.an('object').that.has.property('status');\r",
+									"    pm.expect(responseJSON.category).to.be.an('object').that.has.property('id');\r",
+									"    pm.expect(responseJSON.category).to.be.an('object').that.has.property('name');\r",
+									"    pm.expect(responseJSON.tags).to.be.an('array').that.has.length.above(0);\r",
+									"    responseJSON.tags.forEach(function (tag) {\r",
+									"        pm.expect(tag).to.be.an('object').that.has.property('id');\r",
+									"        pm.expect(tag).to.be.an('object').that.has.property('name');\r",
+									"    });\r",
+									"    pm.expect(responseJSON.photoUrls).to.be.an('array').that.has.length.above(0);\r",
+									"\r",
+									"    pm.expect(responseJSON.id).to.not.be.empty;\r",
+									"    pm.expect(responseJSON.category.id).to.not.be.empty;\r",
+									"    pm.expect(responseJSON.category.name).to.not.be.empty;\r",
+									"    responseJSON.tags.forEach(function (tag) {\r",
+									"        pm.expect(tag.id).to.not.be.empty;\r",
+									"        pm.expect(tag.name).to.not.be.empty;\r",
+									"    });\r",
+									"    pm.expect(responseJSON.photoUrls[0]).to.not.be.empty;\r",
+									"    pm.expect(responseJSON.status).to.not.be.empty;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "key",
+									"value": "auktorisation",
+									"type": "string"
+								},
+								{
+									"key": "in",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "value",
+									"value": "special-key",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 2,\r\n  \"username\": \"Josefin\",\r\n  \"firstName\": \"Josefin80\",\r\n  \"lastName\": \"Stefankova\",\r\n  \"email\": \"s.josefin@gmail.com\",\r\n  \"password\": \"00000\",\r\n  \"phone\": \"0000\",\r\n  \"userStatus\": 0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/user",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"user"
+							]
+						},
+						"description": "Skapa user"
+					},
+					"response": [
+						{
+							"name": "Create user",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"id\": 2,\r\n  \"username\": \"Josefin\",\r\n  \"firstName\": \"Josefin80\",\r\n  \"lastName\": \"Stefankova\",\r\n  \"email\": \"s.josefin@gmail.com\",\r\n  \"password\": \"00000\",\r\n  \"phone\": \"0000\",\r\n  \"userStatus\": 0\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://petstore.swagger.io/v2/user",
+									"protocol": "https",
+									"host": [
+										"petstore",
+										"swagger",
+										"io"
+									],
+									"path": [
+										"v2",
+										"user"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Thu, 07 Sep 2023 12:30:39 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Methods",
+									"value": "GET, POST, DELETE, PUT"
+								},
+								{
+									"key": "Access-Control-Allow-Headers",
+									"value": "Content-Type, api_key, Authorization"
+								},
+								{
+									"key": "Server",
+									"value": "Jetty(9.2.9.v20150224)"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 200,\n    \"type\": \"unknown\",\n    \"message\": \"2\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get user info by name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Test to validate response headers\r",
+									"pm.test(\"Response headers are valid\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\");\r",
+									"    pm.response.to.have.header(\"date\");\r",
+									"    pm.response.to.have.header(\"server\");\r",
+									"});\r",
+									"\r",
+									"// Test to validate the JSON structure of the response\r",
+									"pm.test(\"Response JSON structure is valid\", function () {\r",
+									"    var responseJSON = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseJSON).to.be.an('object').that.has.all.keys('id', 'category', 'name', 'photoUrls', 'tags', 'status');\r",
+									"    pm.expect(responseJSON.category).to.be.an('object').that.has.all.keys('id', 'name');\r",
+									"    pm.expect(responseJSON.tags).to.be.an('array').that.has.length.above(0);\r",
+									"    responseJSON.tags.forEach(function (tag) {\r",
+									"        pm.expect(tag).to.be.an('object').that.has.all.keys('id', 'name');\r",
+									"    });\r",
+									"    pm.expect(responseJSON.photoUrls).to.be.an('array').that.has.length.above(0);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/user/RickardApel123",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"user",
+								"RickardApel123"
+							]
+						},
+						"description": "Hämta user info"
+					},
+					"response": []
+				},
+				{
+					"name": "Update user info",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Test to validate response headers\r",
+									"pm.test(\"Response headers are valid\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\");\r",
+									"    pm.response.to.have.header(\"date\");\r",
+									"    pm.response.to.have.header(\"server\");\r",
+									"});\r",
+									"\r",
+									"// Test to validate the JSON structure of the response\r",
+									"pm.test(\"Response JSON structure is valid\", function () {\r",
+									"    var responseJSON = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseJSON).to.be.an('object').that.has.all.keys('id', 'category', 'name', 'photoUrls', 'tags', 'status');\r",
+									"    pm.expect(responseJSON.category).to.be.an('object').that.has.all.keys('id', 'name');\r",
+									"    pm.expect(responseJSON.tags).to.be.an('array').that.has.length.above(0);\r",
+									"    responseJSON.tags.forEach(function (tag) {\r",
+									"        pm.expect(tag).to.be.an('object').that.has.all.keys('id', 'name');\r",
+									"    });\r",
+									"    pm.expect(responseJSON.photoUrls).to.be.an('array').that.has.length.above(0);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"pm.test(\"User info is updated\", function () {\r",
+									"    var responseJSON = pm.response.json();\r",
+									"    pm.expect(responseJSON.code).to.equal(0, \"User info was not updated successfully\");\r",
+									"    pm.expect(responseJSON.type).to.be.a('string').and.to.not.be.empty;\r",
+									"    pm.expect(responseJSON.message).to.be.a('string').and.to.not.be.empty;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 9223372036854766795,\r\n    \"username\": \"RickardApel123\",\r\n    \"firstName\": \"Rickard\",\r\n    \"lastName\": \"Apel\",\r\n    \"email\": \"prod.apel@gmail.com\",\r\n    \"password\": \"RickardApel\",\r\n    \"phone\": \"00000\",\r\n    \"userStatus\": 0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/user/RickardApel",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"user",
+								"RickardApel"
+							]
+						},
+						"description": "Uppdatera user info"
+					},
+					"response": []
+				},
+				{
+					"name": "Log in user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Test to validate response headers\r",
+									"pm.test(\"Response headers are valid\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\");\r",
+									"    pm.response.to.have.header(\"date\");\r",
+									"    pm.response.to.have.header(\"server\");\r",
+									"});\r",
+									"\r",
+									"// Test to validate the JSON structure of the response\r",
+									"pm.test(\"Response JSON structure is valid\", function () {\r",
+									"    var responseJSON = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseJSON).to.be.an('object').that.has.all.keys('id', 'category', 'name', 'photoUrls', 'tags', 'status');\r",
+									"    pm.expect(responseJSON.category).to.be.an('object').that.has.all.keys('id', 'name');\r",
+									"    pm.expect(responseJSON.tags).to.be.an('array').that.has.length.above(0);\r",
+									"    responseJSON.tags.forEach(function (tag) {\r",
+									"        pm.expect(tag).to.be.an('object').that.has.all.keys('id', 'name');\r",
+									"    });\r",
+									"    pm.expect(responseJSON.photoUrls).to.be.an('array').that.has.length.above(0);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"pm.test(\"User was logged in\", function () {\r",
+									"    var responseJSON = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseJSON.code).to.equal(0);\r",
+									"    pm.expect(responseJSON.type).to.be.a('string');\r",
+									"    pm.expect(responseJSON.message).to.be.a('string');\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "key",
+									"value": "auktorisation",
+									"type": "string"
+								},
+								{
+									"key": "in",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "value",
+									"value": "special-key",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 2,\r\n  \"username\": \"Josefin\",\r\n  \"firstName\": \"Josefin80\",\r\n  \"lastName\": \"Stefankova\",\r\n  \"email\": \"s.josefin@gmail.com\",\r\n  \"password\": \"00000\",\r\n  \"phone\": \"0000\",\r\n  \"userStatus\": 0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/user/login?username=RickardApel123&password=RickardApel",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"user",
+								"login"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "RickardApel123"
+								},
+								{
+									"key": "password",
+									"value": "RickardApel"
+								}
+							]
+						},
+						"description": "Hämta log in user"
+					},
+					"response": []
+				},
+				{
+					"name": "Log out current user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Test to validate response headers\r",
+									"pm.test(\"Response headers are valid\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\");\r",
+									"    pm.response.to.have.header(\"date\");\r",
+									"    pm.response.to.have.header(\"server\");\r",
+									"});\r",
+									"\r",
+									"// Test to validate the JSON structure of the response\r",
+									"pm.test(\"Response JSON structure is valid\", function () {\r",
+									"    var responseJSON = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseJSON).to.be.an('object').that.has.all.keys('id', 'category', 'name', 'photoUrls', 'tags', 'status');\r",
+									"    pm.expect(responseJSON.category).to.be.an('object').that.has.all.keys('id', 'name');\r",
+									"    pm.expect(responseJSON.tags).to.be.an('array').that.has.length.above(0);\r",
+									"    responseJSON.tags.forEach(function (tag) {\r",
+									"        pm.expect(tag).to.be.an('object').that.has.all.keys('id', 'name');\r",
+									"    });\r",
+									"    pm.expect(responseJSON.photoUrls).to.be.an('array').that.has.length.above(0);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"pm.test(\"User is logged out\", function () {\r",
+									"    var responseJSON = pm.response.json();\r",
+									"    pm.expect(responseJSON.code).to.equal(0);\r",
+									"    pm.expect(responseJSON.type).to.equal(\"\");\r",
+									"    pm.expect(responseJSON.message).to.equal(\"\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "key",
+									"value": "auktorisation",
+									"type": "string"
+								},
+								{
+									"key": "in",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "value",
+									"value": "special-key",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"code\": 200,\r\n  \"type\": \"unknown\",\r\n  \"message\": \"ok\"\r\n}"
+						},
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/user/logout",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"user",
+								"logout"
+							]
+						},
+						"description": "Hämta log out user"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Test to validate response headers\r",
+									"pm.test(\"Response headers are valid\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\");\r",
+									"    pm.response.to.have.header(\"date\");\r",
+									"    pm.response.to.have.header(\"server\");\r",
+									"});\r",
+									"\r",
+									"// Test to validate the JSON structure of the response\r",
+									"pm.test(\"Response JSON structure is valid\", function () {\r",
+									"    var responseJSON = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseJSON).to.be.an('object').that.has.all.keys('id', 'category', 'name', 'photoUrls', 'tags', 'status');\r",
+									"    pm.expect(responseJSON.category).to.be.an('object').that.has.all.keys('id', 'name');\r",
+									"    pm.expect(responseJSON.tags).to.be.an('array').that.has.length.above(0);\r",
+									"    responseJSON.tags.forEach(function (tag) {\r",
+									"        pm.expect(tag).to.be.an('object').that.has.all.keys('id', 'name');\r",
+									"    });\r",
+									"    pm.expect(responseJSON.photoUrls).to.be.an('array').that.has.length.above(0);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"pm.test(\"User was deleted\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"User deleted successfully\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "key",
+									"value": "auktorisation",
+									"type": "string"
+								},
+								{
+									"key": "in",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "value",
+									"value": "special-key",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								""
+							]
+						},
+						"description": "Ta bort user"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Store",
+			"item": [
+				{
+					"name": "Placing an order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Test to validate response headers\r",
+									"pm.test(\"Response headers are valid\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\");\r",
+									"    pm.response.to.have.header(\"date\");\r",
+									"    pm.response.to.have.header(\"server\");\r",
+									"});\r",
+									"\r",
+									"// Test to validate the JSON structure of the response\r",
+									"pm.test(\"Response JSON structure is valid\", function () {\r",
+									"    var responseJSON = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseJSON).to.be.an('object').that.has.all.keys('id', 'category', 'name', 'photoUrls', 'tags', 'status');\r",
+									"    pm.expect(responseJSON.category).to.be.an('object').that.has.all.keys('id', 'name');\r",
+									"    pm.expect(responseJSON.tags).to.be.an('array').that.has.length.above(0);\r",
+									"    responseJSON.tags.forEach(function (tag) {\r",
+									"        pm.expect(tag).to.be.an('object').that.has.all.keys('id', 'name');\r",
+									"    });\r",
+									"    pm.expect(responseJSON.photoUrls).to.be.an('array').that.has.length.above(0);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"pm.test(\"Order is placed successfully\", function () {\r",
+									"    var responseJSON = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseJSON.id).to.be.a('number').and.to.be.above(0);\r",
+									"    pm.expect(responseJSON.petId).to.be.a('number').and.to.be.above(0);\r",
+									"    pm.expect(responseJSON.quantity).to.be.a('number').and.to.be.above(0);\r",
+									"    pm.expect(responseJSON.shipDate).to.be.a('string').and.to.not.be.empty;\r",
+									"    pm.expect(responseJSON.status).to.be.a('string').and.to.not.be.empty;\r",
+									"    pm.expect(responseJSON.complete).to.be.a('boolean').and.to.be.true;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"console.log(\"lägg till order\")"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "key",
+									"value": "auktorisation",
+									"type": "string"
+								},
+								{
+									"key": "in",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "value",
+									"value": "special-key",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 1,\r\n  \"petId\": 1,\r\n  \"quantity\": 0,\r\n  \"shipDate\": \"2023-09-06T21:31:23.855Z\",\r\n  \"status\": \"placed\",\r\n  \"complete\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/store/order",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"store",
+								"order"
+							]
+						},
+						"description": "Skapa order"
+					},
+					"response": []
+				},
+				{
+					"name": "Find order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Test to validate response headers\r",
+									"pm.test(\"Response headers are valid\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\");\r",
+									"    pm.response.to.have.header(\"date\");\r",
+									"    pm.response.to.have.header(\"server\");\r",
+									"});\r",
+									"\r",
+									"// Test to validate the JSON structure of the response\r",
+									"pm.test(\"Response JSON structure is valid\", function () {\r",
+									"    var responseJSON = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseJSON).to.be.an('object').that.has.all.keys('id', 'category', 'name', 'photoUrls', 'tags', 'status');\r",
+									"    pm.expect(responseJSON.category).to.be.an('object').that.has.all.keys('id', 'name');\r",
+									"    pm.expect(responseJSON.tags).to.be.an('array').that.has.length.above(0);\r",
+									"    responseJSON.tags.forEach(function (tag) {\r",
+									"        pm.expect(tag).to.be.an('object').that.has.all.keys('id', 'name');\r",
+									"    });\r",
+									"    pm.expect(responseJSON.photoUrls).to.be.an('array').that.has.length.above(0);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"pm.test(\"Validate that the chosen order was found\", function () {\r",
+									"    var responseJSON = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseJSON.id).to.equal(1, \"The order ID should be 1\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "key",
+									"value": "auktorisation",
+									"type": "string"
+								},
+								{
+									"key": "in",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "value",
+									"value": "special-key",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 1,\r\n  \"petId\": 1,\r\n  \"quantity\": 0,\r\n  \"shipDate\": \"2023-09-06T21:31:23.855Z\",\r\n  \"status\": \"placed\",\r\n  \"complete\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/store/order/1",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"store",
+								"order",
+								"1"
+							]
+						},
+						"description": "Hämta order"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Test to validate response headers\r",
+									"pm.test(\"Response headers are valid\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\");\r",
+									"    pm.response.to.have.header(\"date\");\r",
+									"    pm.response.to.have.header(\"server\");\r",
+									"});\r",
+									"\r",
+									"// Test to validate the JSON structure of the response\r",
+									"pm.test(\"Response JSON structure is valid\", function () {\r",
+									"    var responseJSON = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseJSON).to.be.an('object').that.has.all.keys('id', 'category', 'name', 'photoUrls', 'tags', 'status');\r",
+									"    pm.expect(responseJSON.category).to.be.an('object').that.has.all.keys('id', 'name');\r",
+									"    pm.expect(responseJSON.tags).to.be.an('array').that.has.length.above(0);\r",
+									"    responseJSON.tags.forEach(function (tag) {\r",
+									"        pm.expect(tag).to.be.an('object').that.has.all.keys('id', 'name');\r",
+									"    });\r",
+									"    pm.expect(responseJSON.photoUrls).to.be.an('array').that.has.length.above(0);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response message is a string\", function () {\r",
+									"    pm.expect(pm.response.json().message).to.be.a('string');\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "key",
+									"value": "auktorisation",
+									"type": "string"
+								},
+								{
+									"key": "in",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "value",
+									"value": "special-key",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://petstore.swagger.io/v2/store/order/1",
+							"protocol": "https",
+							"host": [
+								"petstore",
+								"swagger",
+								"io"
+							],
+							"path": [
+								"v2",
+								"store",
+								"order",
+								"1"
+							]
+						},
+						"description": "Ta bort order"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
